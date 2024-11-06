@@ -1,11 +1,15 @@
-/** @type {import('tailwindcss').Config} */
-export default {
-    content: [
-      "./index.html",
-      "./src/**/*.{js,ts,jsx,tsx}",
-    ],
-    theme: {
-      extend: {},
+// tailwind.config.js
+module.exports = {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Nunito', 'sans-serif'], // Menetapkan 'Nunito' sebagai font sans default
+      },
     },
-    plugins: [],
-}
+  },
+  plugins: [],
+};
