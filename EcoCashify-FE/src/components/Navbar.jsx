@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useUser } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -10,15 +11,22 @@ const Navbar = () => {
     return (
         <nav className="fixed top-0 w-full items-center flex justify-between flex-wrap p-3 bg-[#63AB57] rounded-b-2xl z-50">
             <div className="flex items-center flex-shrink-0 text-white mr-6">
-                <span
-                    className="font-semibold text-xl tracking-tight cursor-pointer"
+                <div
+                    className="flex items-center cursor-pointer"
                     onClick={() => {
                         setIsOpen(false);
                         navigate("/home");
                     }}
                 >
-                    EcoCashify
-                </span>
+                    {/* Logo with Circular Background */}
+                    <div className="bg-white rounded-full p-2 shadow-lg flex items-center justify-center">
+                        <img
+                            src={logo}
+                            alt="EcoCashify Logo"
+                            className="h-10 w-10"
+                        />
+                    </div>
+                </div>
             </div>
 
             <div className="block lg:hidden">

@@ -4,21 +4,16 @@ import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom"
 import { UserProvider } from "./context/UserContext"
 import "./index.css"
 import App from "./App"
-import HomePage from "./pages/HomePage"
-import SignInPage from "./pages/SignInPage"
-import SignUpPage from "./pages/SignUpPage"
-import ProfilePage from "./pages/ProfilePage"
-import ScanPage from "./pages/ScanPage"
-import ClaimPage from "./pages/ClaimPage"
+//import HomePage from "./pages/HomePage.jsx"
+import SignInPage from "./pages/SignInPage.jsx"
+import SignUpPage from "./pages/SignUpPage.jsx"
+import ProfilePage from "./pages/ProfilePage.jsx"
+import ClaimPage from "./pages/ClaimPage.jsx"
 
 const router = createBrowserRouter([
   {
     element: <App />,
     children: [
-      {
-        path: "/home",
-        element: <HomePage />,
-      },
       {
         path: "/auth/sign-in",
         element: <SignInPage />,
@@ -31,20 +26,20 @@ const router = createBrowserRouter([
         path: "/profile",
         element: <ProfilePage />,
       },
-      {
-        path: "/collector/scan-trash",
-        element: <ScanPage />,
-      },
+      // {
+      //   path: "/collector/scan-trash",
+      //   element: <ScanPage />,
+      // },
       {
         path: "/claim-trash",
-        element: <ClaimPage/>,
+        element: <ClaimPage />,
       }
     ],
   },
-  {
-    path: "/",
-    element: <Navigate to="/home" />,
-  },
+  // {
+  //   path: "/",
+  //   element: <Navigate to="/home" />,
+  // },
 ]);
 
 const rootElement = document.getElementById("root");

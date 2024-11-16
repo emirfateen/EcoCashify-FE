@@ -1,50 +1,59 @@
-import React, { useState } from "react";
-import QrReader from "react-qr-reader";
+import { Html5QrcodeScanner } from "html5-qrcode";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
-const BASE_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://localhost:5000"
-    : "http://localhost:5000";
-
 const ClaimPage = () => {
-  const [scanResult, setScanResult] = useState();
+  const [startScan, setStartScan] = useState(false);
+  const [data, setData] = useState("");
 
-  const webcamError = (error) => {
-    if (error) {
-      console.log(error);
+  const sendDataToBackend = async (scannedData) => {
+    try {
+      const response = await axios.post("", {
+        qrData: scannedData,
+      });
+
+      console.log("Backend Response:", response.data);
+    } catch (error) {
+      console.error("Error sending data to backend:", error);
     }
   };
 
-  const webcamScan = (result) => {
-    if (result) {
-      setScanResult(result);
-      axios.post(`${BASE_URL}`, { qrData: result })
-        .then(response => {
-          console.log('Data sent successfully:', response.data);
-        })
-        .catch(error => {
-          console.error('Error sending data to the backend:', error);
-        });
+  useEffect(() => {
+    if (startScan) {
+      const scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+      scanner.render(
+        (decodedText) => {
+          console.log("Scanned Result:", decodedText); // Debugging
+          setData(decodedText);
+          setStartScan(false);
+          scanner.clear();
+
+          // Send scanned data to backend
+          sendDataToBackend(decodedText);
+        },
+        (error) => console.error("Error scanning QR Code:", error) // Debugging
+      );
     }
-  };
+  }, [startScan]);
 
   return (
-    <div className="p-4 max-w-lg mx-auto">
-      <h3 className="text-center text-2xl font-semibold mb-4">Scan QR Code</h3>
-      <div className="flex justify-center">
-        <QrReader
-          delay={300}
-          onError={webcamError}
-          onScan={webcamScan}
-          className="w-full max-w-md"
-          legacyMode={false}
-          facingMode={"environment"}
-        />
-      </div>
-      <div className="mt-4 text-center">
-        <h6 className="text-lg">Scan Result: {scanResult ? scanResult : "No result yet"}</h6>
-      </div>
+    <div className="flex flex-col items-center justify-center h-screen">
+      <h1 className="text-xl font-bold mb-4">QR Code Scanner</h1>
+
+      <button
+        onClick={() => setStartScan(!startScan)}
+        className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mb-4"
+      >
+        {startScan ? "Stop Scan" : "Start Scan"}
+      </button>
+
+      {startScan && <div id="reader" className="w-72 h-72"></div>}
+
+      {data && (
+        <div className="mt-4">
+          <p className="text-lg font-semibold">Scanned Data: {data}</p>
+        </div>
+      )}
     </div>
   );
 };
