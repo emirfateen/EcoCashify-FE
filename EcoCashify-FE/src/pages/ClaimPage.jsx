@@ -10,7 +10,7 @@ const ClaimPage = () => {
     try {
       const response = await axios.post("", {
         qrData: scannedData,
-      });
+      }, { withCredentials: true });
 
       console.log("Backend Response:", response.data);
     } catch (error) {

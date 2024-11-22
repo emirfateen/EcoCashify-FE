@@ -31,7 +31,7 @@ const Navbar = () => {
 
             <div className="block lg:hidden">
                 <button
-                    className="flex items-center px-3 py-2 border rounded text-gray-200 border-gray-400 hover:border-white bg-[#63AB57]"
+                    className="flex items-center px-3 py-2 text-gray-200 border-gray-400 hover:border-gray bg-[#63AB57]"
                     onClick={() => setIsOpen(!isOpen)}
                 >
                     <svg

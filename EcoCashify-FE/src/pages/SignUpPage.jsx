@@ -17,7 +17,11 @@ function SignUp() {
     const handleSignUp = async (e) => {
         e.preventDefault();
         try {
-            const response = await register(email, password);
+            const response = await axios.post(
+                "http://localhost:5000/user/register",
+                { email, password },
+                { withCredentials: true }
+            );
             if (response.message!= "User created successfully") {
                 setError(response.message);
             }

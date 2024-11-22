@@ -12,7 +12,7 @@ const BASE_URL =
 export const login = async (email, password) => {
     try {
       const response = await axios.post(
-        `${BASE_URL}/user/login`, // Use the environment-specific base URL
+        `http://localhost:5000/user/login`,
         { username, password },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -28,7 +28,7 @@ export const login = async (email, password) => {
 export const register = async (email, password) => {
     try {
       const response = await axios.post(
-        `${BASE_URL}/user/register`, // Use the environment-specific base URL
+        `http://localhost:5000/user/register`,
         { username, password, email },
         { headers: { "Content-Type": "application/json" } }
       );

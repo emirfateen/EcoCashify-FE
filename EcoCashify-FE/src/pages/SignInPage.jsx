@@ -6,6 +6,7 @@ import googleIcon from "../assets/google.png";
 import emailIcon from "../assets/email.png";
 import passwordIcon from "../assets/password.png";
 import personIllustration from "../assets/person.png";
+import axios from "axios";
 
 function SignIn() {
     const { setUser } = useUser();
@@ -17,15 +18,20 @@ function SignIn() {
     const handleSignIn = async (e) => {
         e.preventDefault();
         try {
-            const response = await login(email, password);
-            if (response.message === "Login successful") {
-              setUser(response.payload);  // Memastikan user diperbarui dengan benar
-              navigate("/home");
+            const response = await axios.post(
+                "http://localhost:5000/user/login",
+                { email, password },
+                { withCredentials: true }
+            );
+            if (response.data.message === "Login successful") {
+                setUser(response.data.payload); // Update user context
+                navigate("/home"); // Navigate to home page
             } else {
-              setError(response.message);
+                setError(response.data.message); // Handle error message
             }
-          } catch (error) {
-            console.error(error);
+        } catch (error) {
+            console.error("Login error:", error);
+            setError("An error occurred while logging in. Please try again.");
         }
     };
 

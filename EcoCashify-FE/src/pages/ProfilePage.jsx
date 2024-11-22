@@ -14,7 +14,6 @@ const ProfilePage = () => {
     const [originalUser, setOriginalUser] = useState(null); // Store original data for comparison
 
     useEffect(() => {
-        // Fetch user data when the component loads
         const fetchUserData = async () => {
             try {
                 const response = await axios.get("http://localhost:5000/profile", {
@@ -36,8 +35,7 @@ const ProfilePage = () => {
     };
 
     const hasChanges = () => {
-        // Check if there are changes between user and originalUser
-        return JSON.stringify(user) !== JSON.stringify(originalUser);
+        return JSON.stringify(user) !== JSON.stringify(originalUser); // Check if there are changes between user and originalUser
     };
 
     const handleSave = async () => {
