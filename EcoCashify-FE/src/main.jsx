@@ -4,7 +4,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom"
 import { UserProvider } from "./context/UserContext"
 import "./index.css"
 import App from "./App"
-//import HomePage from "./pages/HomePage.jsx"
+import HomePage from "./pages/HomePage.jsx"
 import SignInPage from "./pages/SignInPage.jsx"
 import SignUpPage from "./pages/SignUpPage.jsx"
 import ProfilePage from "./pages/ProfilePage.jsx"
@@ -26,20 +26,20 @@ const router = createBrowserRouter([
         path: "/profile",
         element: <ProfilePage />,
       },
-      // {
-      //   path: "/collector/scan-trash",
-      //   element: <ScanPage />,
-      // },
+      {
+        path: "/home",
+        element: <HomePage />,
+      },
       {
         path: "/claim-trash",
         element: <ClaimPage />,
       }
     ],
   },
-  // {
-  //   path: "/",
-  //   element: <Navigate to="/home" />,
-  // },
+  {
+    path: "/",
+    element: <Navigate to="/auth/sign-in" />,
+  },
 ]);
 
 const rootElement = document.getElementById("root");

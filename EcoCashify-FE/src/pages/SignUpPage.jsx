@@ -5,6 +5,7 @@ import googleIcon from "../assets/google.png";
 import emailIcon from "../assets/email.png";
 import passwordIcon from "../assets/password.png";
 import personIllustration from "../assets/person.png";
+import apiClient from "../utils/axios";
 
 function SignUp() {
     const [email, setEmail] = useState("");
@@ -12,27 +13,27 @@ function SignUp() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     const handleSignUp = async (e) => {
         e.preventDefault();
-        try {
-            const response = await axios.post(
-                "http://localhost:5000/user/register",
-                { email, password },
-                { withCredentials: true }
-            );
-            if (response.message!= "User created successfully") {
-                setError(response.message);
-            }
-            else{
-                setUser(response.payload);
-                navigate("/home");
-            }
-        } catch (err) {
-            console.error(err);
+        if (password !== confirmPassword) {
+            setError("Passwords do not match. Please try again.");
+            return;
         }
-    };
+        apiClient.post("/user/register", { email, password })
+          .then((response) => {
+            console.log("response all", response);
+            if (response.data.success) {
+              setUser(response.data.data);
+              navigate("/home");
+            } 
+          })
+          .catch((error) => {
+            setError(error.response.data.message || "Failed to sign in. Please check your credentials and try again.");
+          });
+      };
 
     const togglePasswordVisibility = () => {
         setShowPassword((prev) => !prev);
@@ -118,6 +119,7 @@ function SignUp() {
                     >
                         Sign Up
                     </button>
+                    <p className="text-red-500 text-sm text-center">{error}</p> 
 
                     {/* Or Separator */}
                     <div className="flex items-center justify-center space-x-2 mt-4 text-gray-400 text-sm">
