@@ -14,9 +14,24 @@ function SignUp() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const navigate = useNavigate();
 
-    const handleSignUp = () => {
-        // Logika Sign Up atau navigasi ke halaman berikutnya
-        navigate("/home");
+    const handleSignUp = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post(
+                "http://localhost:5000/user/register",
+                { email, password },
+                { withCredentials: true }
+            );
+            if (response.message!= "User created successfully") {
+                setError(response.message);
+            }
+            else{
+                setUser(response.payload);
+                navigate("/home");
+            }
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     const togglePasswordVisibility = () => {

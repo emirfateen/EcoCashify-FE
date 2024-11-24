@@ -6,17 +6,33 @@ import googleIcon from "../assets/google.png";
 import emailIcon from "../assets/email.png";
 import passwordIcon from "../assets/password.png";
 import personIllustration from "../assets/person.png";
+import axios from "axios";
 
 function SignIn() {
+    const { setUser } = useUser();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    const { setUser } = useUser();
     const navigate = useNavigate();
 
-    const handleSignIn = () => {
-        setUser({ email });
-        navigate("/home");
+    const handleSignIn = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post(
+                "http://localhost:5000/user/login",
+                { email, password },
+                { withCredentials: true }
+            );
+            if (response.data.message === "Login successful") {
+                setUser(response.data.payload); // Update user context
+                navigate("/home"); // Navigate to home page
+            } else {
+                setError(response.data.message); // Handle error message
+            }
+        } catch (error) {
+            console.error("Login error:", error);
+            setError("An error occurred while logging in. Please try again.");
+        }
     };
 
     const togglePasswordVisibility = () => {
@@ -93,12 +109,6 @@ function SignIn() {
                         <span>Or</span>
                         <span className="block w-16 h-px bg-gray-200"></span>
                     </div>
-
-                    {/* Google Sign In Button */}
-                    <button className="w-full border border-gray-300 flex items-center justify-center py-3 rounded-full font-semibold text-gray-700 hover:bg-gray-100 transition duration-300 text-sm">
-                        <img src={googleIcon} alt="Google Icon" className="w-5 h-5 mr-2" />
-                        Continue with Google
-                    </button>
                 </div>
 
                 {/* Illustration */}
