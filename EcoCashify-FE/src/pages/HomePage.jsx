@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 import topUp from "../assets/topup.svg";
 import transfer from "../assets/transfer.svg";
 import history from "../assets/history.svg";
@@ -15,22 +16,24 @@ const HomePage = () => {
   const [user, setUser] = useState(null);
   useEffect(() => {
     const fetchUser = async () => {
-      const userCookie = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("user="));
+      try {
+        const userCookie = Cookies.get("user");
+        const allCookies = Cookies.get();
+        console.log("All cookies:", allCookies);
+        console.log("User cookie found:", userCookie);
 
-      console.log("document.cookie", document.cookie);
-      if (userCookie) {
-        const encodedCookie = userCookie.split("=")[1];
-        const decodedCookie = decodeURIComponent(encodedCookie);
-        const tempuser = JSON.parse(decodedCookie);
-        tempuser.recycle = 1.2;
-        tempuser.carbon = 1.78;
-        tempuser.rank = 1;
-        setUser(tempuser);
-        console.log("User cookie found:", tempuser);
-      } else {
-        console.error("User cookie not found.");
+        if (userCookie) {
+          const tempuser = JSON.parse(userCookie);
+          tempuser.recycle = 1.2;
+          tempuser.carbon = 1.78;
+          tempuser.rank = 1;
+          setUser(tempuser);
+          console.log("User cookie found:", tempuser);
+        } else {
+          console.error("User cookie not found.");
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
       }
     };
     fetchUser();
