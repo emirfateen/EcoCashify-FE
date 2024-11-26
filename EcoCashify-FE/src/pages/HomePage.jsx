@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import topUp from "../assets/topup.svg";
 import transfer from "../assets/transfer.svg";
 import history from "../assets/history.svg";
@@ -12,21 +12,23 @@ import paper from "../assets/paper.svg";
 import plastic from "../assets/plastic.svg";
 
 const HomePage = () => {
-  const userCookie = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("user="));
-    let user = null;
-  if (userCookie) {
-    const encodedCookie = userCookie.split("=")[1];
-    const decodedCookie = decodeURIComponent(encodedCookie);
-    user = JSON.parse(decodedCookie);
-    console.log(user); // Your decoded user object
-  } else {
-    console.error("User cookie not found.");
-  }
-  user.recyle = 1.2;
-  user.carbon = 1.78;
-  user.rank = 1;
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const userCookie = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("user="));
+    if (userCookie) {
+      const encodedCookie = userCookie.split("=")[1];
+      const decodedCookie = decodeURIComponent(encodedCookie);
+      let tempuser = JSON.parse(decodedCookie);
+      tempuser.recyle = 1.2;
+      tempuser.carbon = 1.78;
+      tempuser.rank = 1;
+      setUser(tempuser);
+    } else {
+      console.error("User cookie not found.");
+    }
+  }, []);
 
   const trashes = {
     cardboard: cardboard,

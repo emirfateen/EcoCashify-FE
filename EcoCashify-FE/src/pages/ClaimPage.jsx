@@ -1,4 +1,4 @@
-import { Html5QrcodeScanner } from "html5-qrcode";
+import { Html5QrcodeScanner, Html5Qrcode } from "html5-qrcode";
 import { useEffect, useState } from "react";
 import apiClient from "../utils/axios";
 
@@ -9,7 +9,6 @@ const ClaimPage = () => {
   const sendDataToBackend = async (scannedData) => {
     try {
       const response = await apiClient.post("/trash/claim", { trash_id: scannedData });
-
       console.log("Backend Response:", response.data);
     } catch (error) {
       console.error("Error sending data to backend:", error);
@@ -17,31 +16,50 @@ const ClaimPage = () => {
   };
 
   useEffect(() => {
-    let scanner;
+    let scannerInstance = null;
+
     if (startScan) {
-      scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
-      scanner.render(
-        (decodedText) => {
-          console.log("Scanned Result:", decodedText); // Debugging
-          setData(decodedText);
-  
-          setStartScan(false);
-          scanner.clear();
-  
-          // Send scanned data to backend
-          sendDataToBackend(decodedText);
-        },
-        (error) => console.error("Error scanning QR Code:", error) // Debugging
-      );
+      // Destroy any existing scanner before creating a new one
+      const startCameraScan = async () => {
+        try {
+          // Use Html5Qrcode directly for more control
+          scannerInstance = new Html5Qrcode("reader");
+          await scannerInstance.start(
+            { facingMode: "environment" }, // Camera mode
+            {
+              fps: 10,
+              qrbox: 250,
+            },
+            (decodedText) => {
+              console.log("Scanned Result:", decodedText);
+              setData(decodedText);
+
+              // Stop the scanner after a successful scan
+              scannerInstance.stop().then(() => {
+                scannerInstance.clear();
+                setStartScan(false);
+              });
+
+              // Send the scanned data to the backend
+              sendDataToBackend(decodedText);
+            },
+            (error) => console.error("Scanning Error:", error)
+          );
+        } catch (error) {
+          console.error("Error initializing camera:", error);
+        }
+      };
+
+      startCameraScan();
     }
-  
-    // Cleanup resources on unmount or when stop scanning
+
+    // Cleanup function to ensure proper resource cleanup
     return () => {
-      if (scanner) {
-        scanner.clear().catch((err) => console.error("Error clearing scanner:", err));
+      if (scannerInstance) {
+        scannerInstance.stop().then(() => scannerInstance.clear());
       }
     };
-  }, [startScan]);  
+  }, [startScan]);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
