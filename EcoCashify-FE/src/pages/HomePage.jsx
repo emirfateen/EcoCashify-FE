@@ -47,14 +47,12 @@ const HomePage = () => {
           <p className="font-semibold">Rp</p>
           <h1 className="text-5xl font-bold mt-3">{user ? user.balance : 0}</h1>
         </div>
-
         <div className="flex flex-row justify-center mt-3">
           <img src={topUp} alt="Top Up" className="w-12 h-12" />
           <img src={transfer} alt="Transfer" className="w-12 h-12 mx-5" />
           <img src={history} alt="History" className="w-12 h-12" />
         </div>
       </header>
-
       <div className="flex flex-col max-w-[900px] mt-10 mx-auto">
         <h1 className="text-2xl font-bold">Summary</h1>
         <div className="flex flex-row justify-between">
@@ -81,32 +79,33 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-
       <div className="flex flex-col max-w-[900px] mt-10 mx-auto">
         <h1 className="text-2xl font-bold">Materials</h1>
         <div className="flex flex-row justify-between">
           {Object.keys(trashes).map((key) => (
-            <div className="mx-5 shadow-gray-500 shadow-md w-32 h-32 rounded-xl flex justify-center items-center">
+            <div
+              key={key}
+              className="mx-5 shadow-gray-500 shadow-md w-32 h-32 rounded-xl flex justify-center items-center"
+            >
               <img src={trashes[key]} alt={key} className="w-24 h-24" />
             </div>
           ))}
         </div>
       </div>
-
-      <div className="flex flex-col max-w-[900px] mt-10 mx-auto border border-gray-300 rounded-xl shadow-md p-6 flex-row items-center justify-between">
+      <div className="flex flex-col md:flex-row max-w-[900px] mt-10 mx-auto border border-gray-300 rounded-xl p-6 items-center justify-between">
         <div className="flex-1">
-          <h2 className="text-lg font-bold">
+          <h2 className="text-xl font-bold">
             Earn Rewards for Recycling your Trash
           </h2>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 mt-2">
             Together, we help the environment.
           </p>
-          <button className="mt-3 text-main-green font-semibold">
+          <button className="mt-4 text-main-green font-semibold">
             Start Recycling →
           </button>
         </div>
-        <div className="flex-shrink-0">
-          <img src={bin} alt="Recycling Bin" className="w-24 h-24" />
+        <div className="flex-shrink-0 mt-6 md:mt-0 md:ml-6">
+          <img src={bin} alt="Recycling Bin" className="w-32 h-32 md:w-40 md:h-40 object-contain" />
         </div>
       </div>
     </div>
