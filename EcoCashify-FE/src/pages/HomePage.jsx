@@ -17,10 +17,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const userCookie = Cookies.get("user");
-        const allCookies = Cookies.get();
-        console.log("All cookies:", allCookies);
-        console.log("User cookie found:", userCookie);
+        const userCookie = localStorage.getItem("user");
 
         if (userCookie) {
           const tempuser = JSON.parse(userCookie);
