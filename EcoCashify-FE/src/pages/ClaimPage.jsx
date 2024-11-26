@@ -10,7 +10,7 @@ const ClaimPage = () => {
     try {
       const response = await apiClient.post("/trash/claim", { trash_id: scannedData });
       console.log("Backend Response:", response.data);
-      localStorage.setItem("user", JSON.stringify(response.data.data.trash));
+      localStorage.setItem("user", JSON.stringify(response.data.data.user));
     } catch (error) {
       console.error("Error sending data to backend:", error);
     }
