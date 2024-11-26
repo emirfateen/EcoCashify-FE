@@ -12,7 +12,18 @@ import paper from "../assets/paper.svg";
 import plastic from "../assets/plastic.svg";
 
 const HomePage = () => {
-  const user = JSON.parse(document.cookie.split('; ').find(row => row.startsWith('user=')).split('=')[1]);
+  const userCookie = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("user="));
+    let user = null;
+  if (userCookie) {
+    const encodedCookie = userCookie.split("=")[1];
+    const decodedCookie = decodeURIComponent(encodedCookie);
+    user = JSON.parse(decodedCookie);
+    console.log(user); // Your decoded user object
+  } else {
+    console.error("User cookie not found.");
+  }
   user.recyle = 1.2;
   user.carbon = 1.78;
   user.rank = 1;
