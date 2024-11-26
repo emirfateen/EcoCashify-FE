@@ -14,20 +14,26 @@ import plastic from "../assets/plastic.svg";
 const HomePage = () => {
   const [user, setUser] = useState(null);
   useEffect(() => {
-    const userCookie = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("user="));
-    if (userCookie) {
-      const encodedCookie = userCookie.split("=")[1];
-      const decodedCookie = decodeURIComponent(encodedCookie);
-      let tempuser = JSON.parse(decodedCookie);
-      tempuser.recyle = 1.2;
-      tempuser.carbon = 1.78;
-      tempuser.rank = 1;
-      setUser(tempuser);
-    } else {
-      console.error("User cookie not found.");
-    }
+    const fetchUser = async () => {
+      const userCookie = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("user="));
+
+      console.log("document.cookie", document.cookie);
+      if (userCookie) {
+        const encodedCookie = userCookie.split("=")[1];
+        const decodedCookie = decodeURIComponent(encodedCookie);
+        const tempuser = JSON.parse(decodedCookie);
+        tempuser.recycle = 1.2;
+        tempuser.carbon = 1.78;
+        tempuser.rank = 1;
+        setUser(tempuser);
+        console.log("User cookie found:", tempuser);
+      } else {
+        console.error("User cookie not found.");
+      }
+    };
+    fetchUser();
   }, []);
 
   const trashes = {
@@ -60,7 +66,7 @@ const HomePage = () => {
           <div className="flex-1 flex-col items-center mx-5 place-items-center border-r">
             <img src={recycle} alt="Recycle" className="w-12 h-12" />
             <p className="text-main-green font-bold text-xl">
-              {user ? user.recyle : 0} kg
+              {user ? user.recycle : 0} kg
             </p>
             <p className="text-sm">Recycle</p>
           </div>
@@ -83,7 +89,7 @@ const HomePage = () => {
 
       <div className="flex flex-col max-w-[900px] mt-10 mx-auto">
         <h1 className="text-2xl font-bold">Materials</h1>
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-row justify-between flex-wrap">
           {Object.keys(trashes).map((key) => (
             <div className="mx-5 shadow-gray-500 shadow-md w-32 h-32 rounded-xl flex justify-center items-center">
               <img src={trashes[key]} alt={key} className="w-24 h-24" />
