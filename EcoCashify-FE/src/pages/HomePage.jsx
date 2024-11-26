@@ -93,7 +93,7 @@ const HomePage = () => {
         </div>
       </div>
 
-      <div className="flex flex-col max-w-[900px] mt-10 mx-auto bg-gray-100 rounded-xl shadow-md p-6 flex-row items-center justify-between">
+      <div className="flex flex-col max-w-[900px] mt-10 mx-auto border border-gray-300 rounded-xl shadow-md p-6 flex-row items-center justify-between">
         <div className="flex-1">
           <h2 className="text-lg font-bold">
             Earn Rewards for Recycling your Trash
