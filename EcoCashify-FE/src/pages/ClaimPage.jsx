@@ -1,4 +1,4 @@
-import { Html5QrcodeScanner, Html5Qrcode } from "html5-qrcode";
+import {Html5QrcodeScannerState, Html5Qrcode } from "html5-qrcode";
 import { useEffect, useState } from "react";
 import apiClient from "../utils/axios";
 
@@ -57,7 +57,7 @@ const ClaimPage = () => {
     // Cleanup function to ensure proper resource cleanup
     return () => {
       if (scannerInstance) {
-        if (scannerInstance.getState() !== Html5QrcodeScanner.STATE.NOT_STARTED) {
+        if (scannerInstance.getState() !== Html5QrcodeScannerState.NOT_STARTED) {
           scannerInstance.stop().then(() => scannerInstance.clear());
         }
       }
