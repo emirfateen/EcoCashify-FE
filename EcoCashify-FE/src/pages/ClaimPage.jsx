@@ -1,120 +1,86 @@
-import React, { useEffect, useState } from "react";
-import topUp from "../assets/topup.svg";
-import transfer from "../assets/transfer.svg";
-import history from "../assets/history.svg";
-import recycle from "../assets/recycle.svg";
-import carbon from "../assets/carbon.svg";
-import rank from "../assets/rank.svg";
-import cardboard from "../assets/cardboard.svg";
-import glass from "../assets/glass.svg";
-import metal from "../assets/metal.svg";
-import paper from "../assets/paper.svg";
-import plastic from "../assets/plastic.svg";
-import bin from "../assets/bin.svg";
+import { Html5QrcodeScanner, Html5Qrcode } from "html5-qrcode";
+import { useEffect, useState } from "react";
+import apiClient from "../utils/axios";
 
-const HomePage = () => {
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    const userCookie = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("user="));
-    if (userCookie) {
-      const encodedCookie = userCookie.split("=")[1];
-      const decodedCookie = decodeURIComponent(encodedCookie);
-      let tempuser = JSON.parse(decodedCookie);
-      tempuser.recyle = 1.2;
-      tempuser.carbon = 1.78;
-      tempuser.rank = 1;
-      setUser(tempuser);
-    } else {
-      console.error("User cookie not found.");
+const ClaimPage = () => {
+  const [startScan, setStartScan] = useState(false);
+  const [data, setData] = useState("");
+
+  const sendDataToBackend = async (scannedData) => {
+    try {
+      const response = await apiClient.post("/trash/claim", { trash_id: scannedData });
+      console.log("Backend Response:", response.data);
+    } catch (error) {
+      console.error("Error sending data to backend:", error);
     }
-  }, []);
-
-  const trashes = {
-    cardboard: cardboard,
-    glass: glass,
-    metal: metal,
-    paper: paper,
-    plastic: plastic,
   };
 
+  useEffect(() => {
+    let scannerInstance = null;
+
+    if (startScan) {
+      // Destroy any existing scanner before creating a new one
+      const startCameraScan = async () => {
+        try {
+          // Use Html5Qrcode directly for more control
+          scannerInstance = new Html5Qrcode("reader");
+          await scannerInstance.start(
+            { facingMode: "environment" }, // Camera mode
+            {
+              fps: 10,
+              qrbox: 250,
+            },
+            (decodedText) => {
+              console.log("Scanned Result:", decodedText);
+              setData(decodedText);
+
+              // Stop the scanner after a successful scan
+              scannerInstance.stop().then(() => {
+                scannerInstance.clear();
+                setStartScan(false);
+              });
+
+              // Send the scanned data to the backend
+              sendDataToBackend(decodedText);
+            },
+            (error) => console.error("Scanning Error:", error)
+          );
+        } catch (error) {
+          console.error("Error initializing camera:", error);
+        }
+      };
+
+      startCameraScan();
+    }
+
+    // Cleanup function to ensure proper resource cleanup
+    return () => {
+      if (scannerInstance) {
+        scannerInstance.stop().then(() => scannerInstance.clear());
+      }
+    };
+  }, [startScan]);
+
   return (
-    <div className="p-10 w-full pt-36 font-nunito">
-      <header className="text-center text-white bg-main-green mx-auto max-w-[900px] rounded-3xl p-10 shadow-gray-500 shadow-md">
-        <p>Total Balance</p>
-        <div className="flex flex-row justify-center">
-          <p className="font-semibold">Rp</p>
-          <h1 className="text-5xl font-bold mt-3">{user ? user.balance : 0}</h1>
-        </div>
+    <div className="flex flex-col items-center justify-center h-screen">
+      <h1 className="text-xl font-bold mb-4">QR Code Scanner</h1>
 
-        <div className="flex flex-row justify-center mt-3">
-          <img src={topUp} alt="Top Up" className="w-12 h-12" />
-          <img src={transfer} alt="Transfer" className="w-12 h-12 mx-5" />
-          <img src={history} alt="History" className="w-12 h-12" />
-        </div>
-      </header>
+      <button
+        onClick={() => setStartScan(!startScan)}
+        className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mb-4"
+      >
+        {startScan ? "Stop Scan" : "Start Scan"}
+      </button>
 
-      <div className="flex flex-col max-w-[900px] mt-10 mx-auto">
-        <h1 className="text-2xl font-bold">Summary</h1>
-        <div className="flex flex-row justify-between">
-          <div className="flex-1 flex-col items-center mx-5 place-items-center border-r">
-            <img src={recycle} alt="Recycle" className="w-12 h-12" />
-            <p className="text-main-green font-bold text-xl">
-              {user ? user.recyle : 0} kg
-            </p>
-            <p className="text-sm">Recycle</p>
-          </div>
-          <div className="flex-1 flex-col items-center mx-5 place-items-center">
-            <img src={carbon} alt="carbon" className="w-12 h-12" />
-            <p className="text-main-green font-bold text-xl">
-              {user ? user.carbon : 0} gray
-            </p>
-            <p className="text-sm">Carbon</p>
-          </div>
-          <div className="flex-1 flex-col items-center mx-5 place-items-center border-l">
-            <img src={rank} alt="rank" className="w-12 h-12" />
-            <p className="text-main-green font-bold text-xl">
-              #{user ? user.rank : 0}
-            </p>
-            <p className="text-sm">Recycle</p>
-          </div>
-        </div>
-      </div>
+      {startScan && <div id="reader" className="w-72 h-72"></div>}
 
-      <div className="flex flex-col max-w-[900px] mt-10 mx-auto">
-        <h1 className="text-2xl font-bold">Materials</h1>
-        <div className="flex flex-row justify-between">
-          {Object.keys(trashes).map((key) => (
-            <div
-              key={key}
-              className="mx-5 shadow-gray-500 shadow-md w-32 h-32 rounded-xl flex justify-center items-center"
-            >
-              <img src={trashes[key]} alt={key} className="w-24 h-24" />
-            </div>
-          ))}
+      {data && (
+        <div className="mt-4">
+          <p className="text-lg font-semibold">Scanned Data: {data}</p>
         </div>
-      </div>
-
-      {/* Rewards Section */}
-      <div className="flex flex-col max-w-[900px] mt-10 mx-auto bg-gray-100 rounded-xl shadow-md p-6 flex-row items-center justify-between">
-        <div className="flex-1">
-          <h2 className="text-lg font-bold">
-            Earn Rewards for Recycling your Trash
-          </h2>
-          <p className="text-sm text-gray-600">
-            Together, we help the environment.
-          </p>
-          <button className="mt-3 text-main-green font-semibold">
-            Start Recycling →
-          </button>
-        </div>
-        <div className="flex-shrink-0">
-          <img src={bin} alt="Recycling Bin" className="w-24 h-24" />
-        </div>
-      </div>
+      )}
     </div>
   );
 };
 
-export default HomePage;
+export default ClaimPage;
