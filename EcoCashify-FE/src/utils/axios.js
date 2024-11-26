@@ -5,6 +5,7 @@ console.log("BASE_URL:", BASE_URL);
 const apiClient = axios.create({
     baseURL: BASE_URL,
     withCredentials: true,
+    credentials: 'include',
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
     }

@@ -12,7 +12,7 @@ import paper from "../assets/paper.svg";
 import plastic from "../assets/plastic.svg";
 
 const HomePage = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(document.cookie.split('; ').find(row => row.startsWith('user=')).split('=')[1]);
   user.recyle = 1.2;
   user.carbon = 1.78;
   user.rank = 1;
