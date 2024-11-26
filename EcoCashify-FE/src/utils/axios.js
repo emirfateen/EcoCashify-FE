@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+export const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000";
+console.log("BASE_URL:", BASE_URL);
 const apiClient = axios.create({
-    baseURL: process.env.BASE_URL,
+    baseURL: BASE_URL,
     withCredentials: true,
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
