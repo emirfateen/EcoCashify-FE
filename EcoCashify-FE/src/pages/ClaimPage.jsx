@@ -17,24 +17,31 @@ const ClaimPage = () => {
   };
 
   useEffect(() => {
+    let scanner;
     if (startScan) {
-      const scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+      scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
       scanner.render(
         (decodedText) => {
           console.log("Scanned Result:", decodedText); // Debugging
           setData(decodedText);
-
-
+  
           setStartScan(false);
           scanner.clear();
-
+  
           // Send scanned data to backend
           sendDataToBackend(decodedText);
         },
         (error) => console.error("Error scanning QR Code:", error) // Debugging
       );
     }
-  }, [startScan]);
+  
+    // Cleanup resources on unmount or when stop scanning
+    return () => {
+      if (scanner) {
+        scanner.clear().catch((err) => console.error("Error clearing scanner:", err));
+      }
+    };
+  }, [startScan]);  
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
