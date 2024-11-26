@@ -57,7 +57,7 @@ const ClaimPage = () => {
     // Cleanup function to ensure proper resource cleanup
     return () => {
       if (scannerInstance) {
-        if (scannerInstance.getState() !== Html5QrcodeScannerState.NOT_STARTED) {
+        if (scannerInstance.getState() !== Html5QrcodeScanner.STATE.NOT_STARTED) {
           scannerInstance.stop().then(() => scannerInstance.clear());
         }
       }
