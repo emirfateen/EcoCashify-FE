@@ -1,6 +1,6 @@
 import { Html5QrcodeScanner } from "html5-qrcode";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import apiClient from "../utils/axios";
 
 const ClaimPage = () => {
   const [startScan, setStartScan] = useState(false);
@@ -8,9 +8,7 @@ const ClaimPage = () => {
 
   const sendDataToBackend = async (scannedData) => {
     try {
-      const response = await axios.post("", {
-        qrData: scannedData,
-      }, { withCredentials: true });
+      const response = await apiClient.post("/trash/claim", { trash_id: scannedData });
 
       console.log("Backend Response:", response.data);
     } catch (error) {
@@ -25,6 +23,8 @@ const ClaimPage = () => {
         (decodedText) => {
           console.log("Scanned Result:", decodedText); // Debugging
           setData(decodedText);
+
+
           setStartScan(false);
           scanner.clear();
 
