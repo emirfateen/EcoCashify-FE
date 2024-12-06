@@ -9,6 +9,10 @@ import SignInPage from "./pages/SignInPage.jsx"
 import SignUpPage from "./pages/SignUpPage.jsx"
 import ProfilePage from "./pages/ProfilePage.jsx"
 import ClaimPage from "./pages/ClaimPage.jsx"
+import SuccessfulPage from "./pages/SuccessfulPage.jsx"
+import PayPage from "./pages/PayPage.jsx"
+import TransferPage from "./pages/TransferPage.jsx"
+import CreateInvoicePage from "./pages/CreateInvoicePage.jsx"
 
 const router = createBrowserRouter([
   {
@@ -33,6 +37,22 @@ const router = createBrowserRouter([
       {
         path: "/claim-trash",
         element: <ClaimPage />,
+      },
+      {
+        path: "/success/:message",
+        element: <SuccessfulPage />,
+      },
+      {
+        path: "/pay",
+        element: <PayPage />,
+      },
+      {
+        path: "/transfer",
+        element: <TransferPage />,
+      },
+      {
+        path: "/create-invoice",
+        element: <CreateInvoicePage />,
       }
     ],
   },

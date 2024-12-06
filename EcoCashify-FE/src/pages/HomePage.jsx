@@ -4,6 +4,7 @@ import topUp from "../assets/topup.svg";
 import transfer from "../assets/transfer.svg";
 import history from "../assets/history.svg";
 import recycle from "../assets/recycle.svg";
+import pay from "../assets/pay.svg";
 import carbon from "../assets/carbon.svg";
 import rank from "../assets/rank.svg";
 import cardboard from "../assets/cardboard.svg";
@@ -20,7 +21,7 @@ const HomePage = () => {
         const userCookie = localStorage.getItem("user");
 
         if (userCookie) {
-          const tempuser = JSON.parse(userCookie);
+          const tempuser = await JSON.parse(userCookie);
           tempuser.recycle = 1.2;
           tempuser.carbon = 1.78;
           tempuser.rank = 1;
@@ -54,30 +55,36 @@ const HomePage = () => {
         </div>
 
         <div className="flex flex-row justify-center mt-3">
-          <img src={topUp} alt="Top Up" className="w-12 h-12" />
-          <img src={transfer} alt="Transfer" className="w-12 h-12 mx-5" />
+          <a href="/transfer">
+            <img src={transfer} alt="Transfer" className="w-12 h-12" />
+          </a>
+          <a href="/pay">
+            <img src={pay} alt="Pay" className="w-12 h-12 mx-5" />
+          </a>
+          <a href="/history">
           <img src={history} alt="History" className="w-12 h-12" />
+          </a>
         </div>
       </header>
 
       <div className="flex flex-col max-w-[900px] mt-10 mx-auto">
         <h1 className="text-2xl font-bold">Summary</h1>
         <div className="flex flex-row justify-between">
-          <div className="flex-1 flex-col items-center mx-5 place-items-center border-r">
+          <div className="flex-1 flex-col items-center place-items-center border-r">
             <img src={recycle} alt="Recycle" className="w-12 h-12" />
             <p className="text-main-green font-bold text-xl">
               {user ? user.recycle : 0} kg
             </p>
             <p className="text-sm">Recycle</p>
           </div>
-          <div className="flex-1 flex-col items-center mx-5 place-items-center">
+          <div className="flex-1 flex-col items-center place-items-center">
             <img src={carbon} alt="carbon" className="w-12 h-12" />
             <p className="text-main-green font-bold text-xl">
               {user ? user.carbon : 0} gray
             </p>
             <p className="text-sm">Carbon</p>
           </div>
-          <div className="flex-1 flex-col items-center mx-5 place-items-center border-l">
+          <div className="flex-1 flex-col items-center place-items-center border-l">
             <img src={rank} alt="rank" className="w-12 h-12" />
             <p className="text-main-green font-bold text-xl">
               #{user ? user.rank : 0}
@@ -91,7 +98,7 @@ const HomePage = () => {
         <h1 className="text-2xl font-bold">Materials</h1>
         <div className="flex flex-row justify-between flex-wrap">
           {Object.keys(trashes).map((key) => (
-            <div className="mx-5 shadow-gray-500 shadow-md w-32 h-32 rounded-xl flex justify-center items-center">
+            <div className="mx-5 shadow-gray-500 shadow-md w-32 h-32 rounded-xl flex justify-center items-center bg-white">
               <img src={trashes[key]} alt={key} className="w-24 h-24" />
             </div>
           ))}

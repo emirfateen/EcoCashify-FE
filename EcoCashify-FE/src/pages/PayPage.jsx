@@ -8,13 +8,13 @@ const ClaimPage = () => {
 
   const sendDataToBackend = async (scannedData) => {
     try {
-      const response = await apiClient.post("/trash/claim", {
-        trash_id: scannedData,
+      const response = await apiClient.post("/invoice/pay", {
+        invoice_id: scannedData,
       });
       console.log("Backend Response:", response.data);
       localStorage.setItem("user", JSON.stringify(response.data.data.user));
       if (response.data.success) {
-        window.location.href = "/success/Trash%20claimed";
+        window.location.href = "/success/Payment";
       }
     } catch (error) {
       console.error("Error sending data to backend:", error);

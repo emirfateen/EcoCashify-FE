@@ -82,6 +82,19 @@ const Navbar = () => {
                     >
                         Claim Trash
                     </li>
+                    {user?.role === "merchant" && (
+                    <>
+                        <li
+                            className="block mt-4 lg:inline-block lg:mt-0 text-gray-200 hover:text-white mr-4 cursor-pointer"
+                            onClick={() => {
+                                setIsOpen(false);
+                                navigate("/create-invoice");
+                            }}
+                        >
+                            Create Invoice
+                        </li>
+                    </>
+                    )}
                 </ul>
                 {user ? (
                     <li
