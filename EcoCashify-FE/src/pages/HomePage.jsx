@@ -56,14 +56,14 @@ const HomePage = () => {
 
         <div className="flex flex-row justify-center mt-3">
           <a href="/transfer">
-            <img src={transfer} alt="Transfer" className="w-12 h-12" />
+            <img src={transfer} alt="Transfer" className="w-12 h-12 mx-3" />
           </a>
           <a href="/pay">
-            <img src={pay} alt="Pay" className="w-12 h-12 mx-5" />
+            <img src={pay} alt="Pay" className="w-12 h-12 mx-3" />
           </a>
-          <a href="/history">
-          <img src={history} alt="History" className="w-12 h-12" />
-          </a>
+          {/* <a href="/history">
+            <img src={history} alt="History" className="w-12 h-12 mx-3" />
+          </a> */}
         </div>
       </header>
 
