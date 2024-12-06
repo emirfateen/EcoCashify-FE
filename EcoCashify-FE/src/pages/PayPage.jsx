@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import apiClient from "../utils/axios";
+import { useUser } from "../context/UserContext";
 
 const ClaimPage = () => {
   const [data, setData] = useState("");
   const [startScan, setStartScan] = useState(true);
+  const { setUser } = useUser();
 
   const sendDataToBackend = async (scannedData) => {
     try {
@@ -14,6 +16,7 @@ const ClaimPage = () => {
       console.log("Backend Response:", response.data);
       localStorage.setItem("user", JSON.stringify(response.data.data.user));
       if (response.data.success) {
+        setUser(response.data.data.user);
         window.location.href = "/success/Payment";
       }
     } catch (error) {

@@ -23,6 +23,7 @@ function SignIn() {
         console.log("response all", response);
         if (response.data.success) {
           setUser(response.data.data);
+          localStorage.setItem("token", response.data.data.token);
           localStorage.setItem("user", JSON.stringify(response.data.data));
           navigate("/home");
         } 

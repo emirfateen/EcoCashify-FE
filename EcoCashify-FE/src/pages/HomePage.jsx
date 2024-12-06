@@ -98,7 +98,7 @@ const HomePage = () => {
         <h1 className="text-2xl font-bold">Materials</h1>
         <div className="flex flex-row justify-between flex-wrap">
           {Object.keys(trashes).map((key) => (
-            <div className="mx-5 shadow-gray-500 shadow-md w-32 h-32 rounded-xl flex justify-center items-center bg-white">
+            <div className="m-5 shadow-gray-500 shadow-md md:w-32 md:h-32 w-24 h-24 rounded-xl flex justify-center items-center bg-white">
               <img src={trashes[key]} alt={key} className="w-24 h-24" />
             </div>
           ))}
