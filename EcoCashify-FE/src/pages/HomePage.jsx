@@ -12,10 +12,24 @@ import glass from "../assets/glass.svg";
 import metal from "../assets/metal.svg";
 import paper from "../assets/paper.svg";
 import plastic from "../assets/plastic.svg";
+import apiClient from "../utils/axios";
+import { useUser } from "../context/UserContext";
 
 const HomePage = () => {
-  const [user, setUser] = useState(null);
+  const { user, setUser } = useUser();
+
   useEffect(() => {
+    const getUser = async () => {
+      try {
+        const response = await apiClient.get("/user/profile");
+        if(response.data.success) {
+          setUser(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
     const fetchUser = async () => {
       try {
         const userCookie = localStorage.getItem("user");
@@ -34,6 +48,7 @@ const HomePage = () => {
         console.error("Error fetching user:", error);
       }
     };
+    getUser();
     fetchUser();
   }, []);
 
