@@ -23,32 +23,17 @@ const HomePage = () => {
       try {
         const response = await apiClient.get("/user/profile");
         if(response.data.success) {
-          setUser(response.data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching user:", error);
-      }
-    };
-
-    const fetchUser = async () => {
-      try {
-        const userCookie = localStorage.getItem("user");
-
-        if (userCookie) {
-          const tempuser = await JSON.parse(userCookie);
+          const tempuser = response.data.data;
           tempuser.recycle = 1.2;
           tempuser.carbon = 1.78;
           tempuser.rank = 1;
           setUser(tempuser);
-        } else {
-          console.error("User cookie not found.");
         }
       } catch (error) {
         console.error("Error fetching user:", error);
       }
     };
     getUser();
-    fetchUser();
   }, []);
 
   const trashes = {

@@ -14,21 +14,29 @@ function SignIn() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-    apiClient.post("/user/login", { email, password })
+    setLoading(true);
+    apiClient
+      .post("/user/login", { email, password })
       .then((response) => {
+        setLoading(false);
         console.log("response all", response);
         if (response.data.success) {
           localStorage.setItem("token", response.data.data.token);
           setUser(response.data.data);
           navigate("/home");
-        } 
+        }
       })
       .catch((error) => {
-        setError(error.response.data.message || "Failed to sign in. Please check your credentials and try again.");
+        setLoading(false);
+        setError(
+          error.response.data.message ||
+            "Failed to sign in. Please check your credentials and try again."
+        );
       });
   };
 
@@ -105,13 +113,19 @@ function SignIn() {
             </a>
           </div>
 
-          {/* Sign In Button */}
-          <button
-            onClick={handleSignIn}
-            className="w-full bg-[#63AB57] text-white py-3 rounded-full font-semibold text-sm hover:bg-[#52984A] transition duration-300"
-          >
-            Sign In
-          </button>
+          {loading ? (
+            <div className="flex justify-center">
+              <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 border-t-[#63AB57] animate-spin"></div>
+            </div>
+          ) : (
+            <button
+              onClick={handleSignIn}
+              className="w-full bg-[#63AB57] text-white py-3 rounded-full font-semibold text-sm hover:bg-[#52984A] transition duration-300"
+            >
+              Sign In
+            </button>
+          )}
+
           <p className="text-red-500 text-sm text-center">{error}</p>
 
           {/* Or Separator */}
