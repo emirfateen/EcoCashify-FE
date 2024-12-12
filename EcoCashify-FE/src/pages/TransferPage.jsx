@@ -18,7 +18,6 @@ const TransferPage = () => {
                 email: method === "email" ? email : null,
                 amount: amount,
             });
-            console.log("Backend Response:", response.data);
             localStorage.setItem("user", JSON.stringify(response.data.data.user));
             if (response.data.success) {
                 setUser(response.data.data.sender);
@@ -30,7 +29,6 @@ const TransferPage = () => {
     };
 
     const handleScan = (result) => {
-        console.log("Scanning Result:", result);
         if (result[0].rawValue) {
             setData(result[0].rawValue);
 

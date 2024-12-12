@@ -13,7 +13,6 @@ const ClaimPage = () => {
       const response = await apiClient.post("/invoice/pay", {
         invoice_id: scannedData,
       });
-      console.log("Backend Response:", response.data);
       localStorage.setItem("user", JSON.stringify(response.data.data.user));
       if (response.data.success) {
         setUser(response.data.data.user);

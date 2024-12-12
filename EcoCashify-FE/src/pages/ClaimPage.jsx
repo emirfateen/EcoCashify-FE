@@ -11,7 +11,6 @@ const ClaimPage = () => {
       const response = await apiClient.post("/trash/claim", {
         trash_id: scannedData,
       });
-      console.log("Backend Response:", response.data);
       localStorage.setItem("user", JSON.stringify(response.data.data.user));
       if (response.data.success) {
         window.location.href = "/success/Trash%20claimed";
@@ -22,7 +21,6 @@ const ClaimPage = () => {
   };
 
   const handleScan = (result) => {
-    console.log("Scanning Result:", result);
     if (result[0].rawValue) {
       setData(result[0].rawValue);
 

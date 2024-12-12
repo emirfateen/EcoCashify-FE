@@ -24,7 +24,6 @@ function SignUp() {
         }
         apiClient.post("/user/register", { email, password })
           .then((response) => {
-            console.log("response all", response);
             if (response.data.success) {
               setUser(response.data.data);
               navigate("/home");

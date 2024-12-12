@@ -40,7 +40,6 @@ const HomePage = () => {
           tempuser.carbon = 1.78;
           tempuser.rank = 1;
           setUser(tempuser);
-          console.log("User cookie found:", tempuser);
         } else {
           console.error("User cookie not found.");
         }
@@ -95,7 +94,7 @@ const HomePage = () => {
           <div className="flex-1 flex-col items-center place-items-center">
             <img src={carbon} alt="carbon" className="w-12 h-12" />
             <p className="text-main-green font-bold text-xl">
-              {user ? user.carbon : 0} gray
+              {user ? user.carbon : 0} gram
             </p>
             <p className="text-sm">Carbon</p>
           </div>
