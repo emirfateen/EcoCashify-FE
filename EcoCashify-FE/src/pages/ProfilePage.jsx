@@ -69,13 +69,6 @@ const ProfilePage = () => {
         />
         <input
           type="text"
-          placeholder="Balance"
-          value={balance}
-          onChange={(e) => setBalance(e.target.value)}
-          className="border p-2 mb-2 w-full rounded"
-        />
-        <input
-          type="text"
           placeholder="Role"
           value={role}
           onChange={(e) => setRole(e.target.value)}

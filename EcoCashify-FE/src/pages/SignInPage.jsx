@@ -127,13 +127,6 @@ function SignIn() {
           )}
 
           <p className="text-red-500 text-sm text-center">{error}</p>
-
-          {/* Or Separator */}
-          <div className="flex items-center justify-center space-x-2 mt-4 text-gray-400 text-sm">
-            <span className="block w-16 h-px bg-gray-200"></span>
-            <span>Or</span>
-            <span className="block w-16 h-px bg-gray-200"></span>
-          </div>
         </div>
 
         {/* Illustration */}

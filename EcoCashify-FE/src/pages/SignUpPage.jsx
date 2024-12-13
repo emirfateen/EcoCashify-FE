@@ -119,19 +119,6 @@ function SignUp() {
                         Sign Up
                     </button>
                     <p className="text-red-500 text-sm text-center">{error}</p> 
-
-                    {/* Or Separator */}
-                    <div className="flex items-center justify-center space-x-2 mt-4 text-gray-400 text-sm">
-                        <span className="block w-16 h-px bg-gray-200"></span>
-                        <span>Or</span>
-                        <span className="block w-16 h-px bg-gray-200"></span>
-                    </div>
-
-                    {/* Google Sign Up Button */}
-                    <button className="w-full border border-gray-300 flex items-center justify-center py-3 rounded-full font-semibold text-gray-700 hover:bg-gray-100 transition duration-300 text-sm">
-                        <img src={googleIcon} alt="Google Icon" className="w-5 h-5 mr-2" />
-                        Sign up with Google
-                    </button>
                 </div>
 
                 {/* Illustration */}
